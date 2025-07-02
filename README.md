@@ -1,40 +1,43 @@
-# evict-icloud (Rust)
+# evict-icloud
 
-A blazing-fast Rust CLI that evicts (removes local copies of) downloaded iCloud files
-inside a directory tree using the native `brctl evict` command.
+a rust cli tool that frees up local storage by evicting downloaded icloud files from your file system while keeping them in the cloud.
 
-## Prerequisites
+## what it does
 
-* macOS with iCloud Drive and the `brctl` utility available (ships by default)
-* Rust toolchain (1.70+ recommended)
+this tool recursively scans directories and uses macos's built-in `brctl evict` command to remove local copies of icloud files. the files remain accessible in icloud drive but no longer take up local disk space.
 
-## Build & Run
+## prerequisites
+
+* macos with icloud drive enabled
+* rust toolchain (1.70+)
+
+## installation & usage
 
 ```bash
-cd rust/
+# build the project
 cargo build --release
-# run
-./target/release/evict-icloud ~/Documents -c 8
+
+# evict files from a directory (replace ~/documents with your target)
+./target/release/evict-icloud ~/documents
+
+# use multiple parallel processes for faster execution
+./target/release/evict-icloud ~/documents -c 8
+
+# see what would be evicted without actually doing it
+./target/release/evict-icloud ~/documents --dry-run
 ```
 
-Dry-run:
+## options
+
+* `-c, --concurrency <n>` - number of parallel processes (defaults to cpu cores)
+* `-d, --dry-run` - preview files that would be evicted
+
+## development
 
 ```bash
-./target/release/evict-icloud ~/Documents --dry-run
-```
-
-## Flags
-
-* `-c, --concurrency <N>` — number of parallel `brctl` processes (defaults to CPU cores)
-* `-d, --dry-run` — list files that would be evicted without executing
-
-## Development
-
-```bash
+# install cargo-watch for live reloading during development
 cargo install cargo-watch
-cargo watch -x run -- "~/Documents" --dry-run
+
+# run with auto-reload on file changes
+cargo watch -x run -- "~/documents" --dry-run
 ```
-
-## License
-
-MIT 
