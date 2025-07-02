@@ -2,7 +2,7 @@
 name = "evict-icloud"
 version = "0.1.0"
 edition = "2021"
-authors = ["Your Name <you@example.com>"]
+authors = ["Haris <hi@haris.sh>"]
 description = "Concurrent CLI to evict downloaded iCloud files via brctl evict"
 license = "MIT"
 
